@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <TypeNav></TypeNav>
     <!-- <type-nav/> -->
@@ -36,3 +37,17 @@ export default {
   }
 }
 </script>
+=======
+  <div>Home</div>
+</template>
+
+<script>
+export default {
+  name: 'Home',
+}
+</script>
+
+<style scoped>
+
+</style>
+>>>>>>> c17645af1fae8298b83f7c2c9222a5e689fd716b
