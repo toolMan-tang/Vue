@@ -10,15 +10,11 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-<<<<<<< HEAD
+    "lodash": "^4.17.20",
     "nprogress": "^0.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "vuex": "^3.6.0"
-=======
-    "vue": "^2.6.11",
-    "vue-router": "^3.4.9"
->>>>>>> c17645af1fae8298b83f7c2c9222a5e689fd716b
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -28,11 +24,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "less": "^4.0.0",
-<<<<<<< HEAD
-    "less-loader": "^7.2.0",
-=======
     "less-loader": "^7.1.0",
->>>>>>> c17645af1fae8298b83f7c2c9222a5e689fd716b
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

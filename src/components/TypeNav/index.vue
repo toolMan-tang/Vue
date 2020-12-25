@@ -28,8 +28,8 @@
                                         <!-- <router-link :to="`/search?categoryName=${nav2.categoryName}`">{{nav2.categoryName}}</router-link> -->
 
                                   </dt>
-                                  <dd v-for="nav3 in nav2.categoryChild" :key="nav3.categoryId">
-                                      <em>
+                                  <dd>
+                                      <em v-for="nav3 in nav2.categoryChild" :key="nav3.categoryId">
                                           <!-- <a href="">{{nav3.categoryName}}</a> -->
                                         <router-link :to="`/search?categoryName=${nav3.categoryName}`">{{nav3.categoryName}}</router-link>
 
