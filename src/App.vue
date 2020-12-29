@@ -22,8 +22,9 @@ export default {
     // })
 
     // 分发请求获取分类列表的异步action
-    // this.$store.dispatch("categoryList");
+    this.$store.dispatch("getBannerList");
     this.$store.dispatch('getCategoryList');
+    this.$store.dispatch('getFloors');
   },
   components : {
       Footer,

@@ -2,7 +2,45 @@
    <!-- 商品分类导航 -->
         <div class="type-nav">
             <div class="container">
-                <h2 class="all">全部商品分类</h2>
+                <div @mouseenter = "showFirst" @mouseleave = "hiddenFirst">
+                    <h2 class="all">全部商品分类</h2>
+                    <div class="sort" v-show="isHome">
+                        <div class="all-sort-list2" @click="toSearch">
+                            <div class="item bo" 
+                            v-for="(c1,index) in categoryLists"
+                            :key="c1.categoryId"
+                            @mouseenter="showSubList(index)"
+                            :class="{active : isActive === index}"
+                            >
+                                <h3>
+                                    <!-- <a href="">{{c1.categoryName}}</a> -->
+                                    <!-- <router-link :to="`/search/?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
+                                    <a :data-categoryName = "c1.categoryName" :data-category1Id = "c1.categoryId">{{c1.categoryName}}</a>
+                                </h3>
+                                <div class="item-list clearfix">
+                                    <div class="subitem">
+                                        <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                                            <dt>
+                                                <!-- <a href="">{{c2.categoryName}}</a> -->
+                                                <!-- 使用了router-link 每使用一次 则生成一个对象组件 占据太多地址-->
+                                                <!-- <router-link :to="`/search/?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">{{c2.categoryName}}</router-link> -->
+                                                <a :data-categoryName = "c2.categoryName" :data-category2Id = "c2.categoryId">{{c2.categoryName}}</a>
+                                            </dt>
+                                            <dd>
+                                                <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                                                    <!-- <a href="">{{c3.categoryName}}</a> -->
+                                                    <!-- <router-link :to="`/search/?categoryName=${c3.categoryName}&category1Id=${c3.categoryId}`">{{c3.categoryName}}</router-link> -->
+                                                    <a :data-categoryName = "c3.categoryName" :data-category3Id = "c3.categoryId">{{c3.categoryName}}</a>
+                                                </em>
+                            
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <nav class="nav">
                     <a href="###">服装城</a>
                     <a href="###">美妆馆</a>
@@ -13,76 +51,83 @@
                     <a href="###">有趣</a>
                     <a href="###">秒杀</a>
                 </nav>
-                <div class="sort">
-                    <div class="all-sort-list2" @click="toSearch">
-                        <div class="item bo" v-for="c1 in categoryList" :key="c1.categoryId">
-                            <h3>
-                                <!-- <a href="">{{c1.categoryName}}</a> -->
-                                <!-- <router-link :to="`/search/?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
-                                <a :data-categoryName = "c1.categoryName" :data-category1Id = "c1.categoryId">{{c1.categoryName}}</a>
-                            </h3>
-                            <div class="item-list clearfix">
-                                <div class="subitem">
-                                    <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-                                        <dt>
-                                            <!-- <a href="">{{c2.categoryName}}</a> -->
-                                            <!-- 使用了router-link 每使用一次 则生成一个对象组件 占据太多地址-->
-                                            <!-- <router-link :to="`/search/?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">{{c2.categoryName}}</router-link> -->
-                                            <a @click="toSearch" :data-categoryName = "c2.categoryName" :data-category2Id = "c2.categoryId">{{c2.categoryName}}</a>
-                                        </dt>
-                                        <dd v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                                            <em>
-                                                <!-- <a href="">{{c3.categoryName}}</a> -->
-                                                <!-- <router-link :to="`/search/?categoryName=${c3.categoryName}&category1Id=${c3.categoryId}`">{{c3.categoryName}}</router-link> -->
-                                                <a @click="toSearch" :data-categoryName = "c3.categoryName" :data-category3Id = "c3.categoryId">{{c3.categoryName}}</a>
-                                            </em>
-                        
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 </template>
 
 <script>
+import {mapState} from "vuex";
+// import _ from 'lodash' // 打包整个库  ==> 太大了, 4M
+import throttle from "lodash/throttle" ;// 只引入需要的模块   ==> 减小打包文件  2.7M
 export default {
   name: 'Nav',
-  computed : {
-      categoryList(){
-          return this.$store.state.home.categoryLists;
+  data () {
+      return {
+           isHome : this.$route.path === '/',
+           isActive : -2,
       }
   },
+  computed : {
+    //   categoryList(){
+    //       return this.$store.state.home.categoryLists;
+    //   }
+    ...mapState({
+        categoryLists : (state) => state.home.categoryLists
+        })
+
+  },
   methods : {
+      hideFirst () {
+      // 标识当前已经离开了整个div
+      this.isActive=-2
+      // 如果当前不是首页, 隐藏一级列表
+      if (this.$route.path!=='/') {
+        this.isHome = false
+      }
+    },
+      showFirst (){
+          this.isHome = true;
+          this.isActive = -1
+      },
+      hiddenFirst (){
+          this.isHome = this.$route.path === '/';
+          this.isActive = -2
+      },
+    //   showSubList(index){
+    //        this.isActive = index;
+    //   },
+      showSubList : throttle(function(index){
+          console.log(this.isActive);
+          if (this.isActive !== -2) {
+               this.isActive = index;
+               console.log(234);
+          }
+      },500,{trailing : true}),
+
       toSearch(event){
           const target = event.target;
           //在dataset中 全部是小写
           const {categoryname, category1id, category2id, category3id} = target.dataset;
+          
+          let query = {
+                  categoryName : categoryname
+              }
+          if (category1id) {
+               query.category1Id = category1id              
+          }else if (category2id) {
+               query.category2Id = category2id              
+          }else if (category3id) {
+               query.category3Id = category3id
+          }
           let location = {
               name : 'search',
+              params: this.$route.params,
+              query
           }
-          if (categoryname) {
-              location.query = {
-                  categoryname 
-              }
-          }else if (category1id) {
-               location.query = {
-                  category1id
-              }
-          }else if (category2id) {
-               location.query = {
-                  category2id
-              }
-          }else if (category3id) {
-               location.query = {
-                  category3id
-              }
-          }
+          console.log(location);
         //    this.$router.push(location,() => {});
            this.$router.push(location).catch(() => {})
+           this.hideFirst()
       }
   }
 }
@@ -198,7 +243,8 @@ export default {
                             }
                         }
 
-                        &:hover {
+                        &.active {
+                           background-color : palevioletred;
                             .item-list {
                                 display: block;
                             }

@@ -33,7 +33,7 @@
                 </h1>
                 <div class="searchArea">
                     <form action="###" class="searchForm">
-                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyWord"/>
+                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword"/>
                         <button class="sui-btn btn-xlarge btn-danger" type="button" @click="toSearch" >搜索</button>
                     </form>
                 </div>
@@ -46,17 +46,24 @@ export default {
   name: 'Header',
   data() {
       return {
-          keyWord : ''
+          keyword : ''
       }
+  },
+  mounted () {
+    // 2). 在Header中绑定自定义事件监听, 在回调中清除数据
+    this.$bus.$on('removeKeyword', () => {
+      this.keyword = ''
+    })
   },
   methods : {
       toSearch(){
           let location = {
               name : 'search',
+              query : this.$route.query
           }
-          if (this.keyWord) {
-              location.params = {keyWord : this.keyWord}
-              location.query = {content : 'ceshi'}
+          console.log(this.keyword);
+          if (this.keyword) {
+              location.params = {keyword : this.keyword}
           }
           /* {
               name : 'search',
@@ -67,7 +74,13 @@ export default {
                   content : 'cesh'
               }
               } */
-          this.$router.replace(location);
+              console.log(location);
+            if (this.$route.name === "search") { // 当前是搜索
+                this.$router.replace(location)
+            } else {
+                this.$router.push(location)
+            }
+            
       }
   }
 }
