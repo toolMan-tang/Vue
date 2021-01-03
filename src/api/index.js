@@ -34,7 +34,8 @@ export const reqGoodsCartInfo = () => {
     method:'get'
   })
 }
-
+//修改购物车状态
+export const reqUpdateCartChecked = (skuID,isChecked) => ajax(`/cart/checkCart/${skuID}/${isChecked}`);
 export const floorsList = () => mock('/floors');
 
 export const commendsList = () => mock('/recommends');

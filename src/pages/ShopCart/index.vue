@@ -45,7 +45,7 @@
             </div>
             <div class="cart-tool">
                 <div class="select-all">
-                <input class="chooseAll" type="checkbox">
+                <input class="chooseAll" type="checkbox" v-model="isAllCheck">
                 <span>全选</span>
                 </div>
                 <div class="option">
@@ -55,10 +55,10 @@
                 </div>
                 <div class="money-box">
                 <div class="chosed">已选择
-                    <span>0</span>件商品</div>
+                    <span>{{checkedNum}}</span>件商品</div>
                 <div class="sumprice">
                     <em>总价（不含运费） ：</em>
-                    <i class="summoney">0</i>
+                    <i class="summoney">{{totalMoney}}</i>
                 </div>
                 <div class="sumbtn">
                     <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -78,36 +78,81 @@ export default {
       
   },
   methods :{
-      getCartList(){
-          this.$store.dispatch('getGoodsCartInfo');
-      },
-      async changeCartNum(shopCart,num,bool){
-        if(!bool){
-          if(num > 0){
-            // shopCart.
-          }else{
-
-          }
-        }else{
-          if(num + shopCart.skuNum <= 0){
-            num = 1 - shopCart.skuNum
-          }
-        }
+    async updateOne(shopCart){
         try {
-          await this.$store.dispatch('addOrUpdateCart',{skuId:shopCart.skuId,skuNum:num})
-          alert('修改数量成功')
+          await this.$store.dispatch('updateCartChecked',{skuId:shopCart.skuId,isChecked:shopCart.isChecked?0:1})
+          alert('修改状态成功')
           this.getCartList()
         } catch (error) {
           alert(error.message)
         }
+        
+    },
+    getCartList(){
+        this.$store.dispatch('getGoodsCartInfo');
+    },
+    async changeCartNum(shopCart,num,bool){
+      if(!bool){
+          if(num > 0){
+          num = num - shopCart.skuNum
+        }else{
+          num = 1 - shopCart.skuNum
+        }
+      }else{
+        if(num + shopCart.skuNum <= 0){
+          num = 1 - shopCart.skuNum
+        }
       }
+      try {
+        await this.$store.dispatch('getGoodsShopCart',{skuId:shopCart.skuId,skuNum:num})
+        alert('修改数量成功')
+        this.getCartList()
+      } catch (error) {
+        alert(error.message)
+      }
+    },
+
   },
   computed : {
       ...mapState({
           cartList : (state) => state.cart.shopCartList || []
 
-      })
-  }
+      }),
+      checkedNum(){
+        return this.cartList.reduce((prev,item) => {
+          if(item.isChecked){
+                prev += item.skuNum
+          }
+          return prev
+        },0)
+      },
+      totalMoney(){
+        return this.cartList.reduce((prev,item) => {
+          if(item.isChecked){
+                prev += item.cartPrice * item.skuNum
+          }
+          return prev;
+        },0)
+      },
+      isAllCheck : {
+         get(){
+          return this.cartList.every(item => item.isChecked)
+        },
+        async set(val){
+          // this.$store.dispatch('updateCartCheckedAll',val?1:0) 是调用updateCartCheckedAll异步函数
+          // 它的结果拿的是异步函数的返回值 固定的那个promise，不是函数return后面Promise.all的返回值promise
+          // 但是这个promise的结果和return后面Promise.all的返回值promise的状态结果一致
+          try {
+            const result = await this.$store.dispatch('updateCartCheckedAll',val?1:0)
+            // alert('修改所有的状态成功')
+            this.getCartList()
+          } catch (error) {
+            alert(error.message)
+          }
+        }
+      }
+  },
+ 
 }
 </script>
 

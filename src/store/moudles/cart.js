@@ -1,4 +1,4 @@
-import {reqGoodsCartInfo,reqGoodsCartUpdate} from '@/api';
+import {reqGoodsCartInfo,reqGoodsCartUpdate,reqUpdateCartChecked} from '@/api';
 
 const state = {
   shopCartList:[]
@@ -29,6 +29,14 @@ const mutations = {
           return Promise.reject(new Error('failed'))
       }
    },
+   async updateCartChecked({commit},{skuId,isChecked}){
+     let result = await reqUpdateCartChecked(skuId,isChecked);
+     if(result.code == 200){
+       return 'ok';
+     } else{
+       return Promise.reject(new Error('failed'));
+     }
+   }
      
  }
 
