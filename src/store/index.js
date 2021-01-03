@@ -3,6 +3,9 @@ import Vuex from 'vuex';
 
 import home from "@/store/moudles/home";
 import search from "@/store/moudles/search";
+import detail from "@/store/moudles/detail";
+import cart from "@/store/moudles/cart";
+import user from "@/store/moudles/user";
 
 Vue.use(Vuex);
 
@@ -26,6 +29,9 @@ export default new Vuex.Store({
     getters,
     modules : {
         home,
-        search
+        search,
+        detail,
+        cart,
+        user
     }
 })

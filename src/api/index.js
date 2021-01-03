@@ -20,9 +20,20 @@ export function categoryList () {
 //   })
 // }
 
-export const bannersList = () => ajax('/cms/banner');
+export const bannersList = () => mock('/banners');
 //搜索
-export const reqSearch = (searchParams) => ajax.post('/list', searchParams) 
+export const reqSearch = (searchParams) => ajax.post('/list', searchParams);
+export const reqGoodsDetail = (skuId) => ajax(`/item/${skuId}`);
+//修改增加 商品
+export const reqGoodsCartUpdate = (skuId,skuNum) => ajax.post(`/cart/addToCart/${skuId}/${skuNum}`);
+//购物车
+// export const reqGoodsCartInfo = () => ajax(`/cart/cartList`);
+export const reqGoodsCartInfo = () => {
+  return ajax({
+    url:'/cart/cartList',
+    method:'get'
+  })
+}
 
 export const floorsList = () => mock('/floors');
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import Nprogress from "nprogress";
 import 'nprogress/nprogress.css';
+import store from '@/store'
 
 const service = axios.create({
      baseURL: '/api',
@@ -10,6 +11,12 @@ const service = axios.create({
 service.interceptors.request.use((config) => {
     //显示进步条
     Nprogress.start();
+    let userTempId = store.state.user.userTempId;
+
+    if(userTempId){
+    config.headers.userTempId = userTempId
+    }
+
     return config;
 })
 

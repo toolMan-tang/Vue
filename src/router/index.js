@@ -5,6 +5,8 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Search from "@/pages/Search";
+import Detail from "@/pages/Detail";
+import ShopCart from "@/pages/ShopCart";
 
 Vue.use(VueRouter);
 const originPush = VueRouter.prototype.push
@@ -58,6 +60,14 @@ export default new VueRouter({
             meta: { 
                 isHideFooter: true
             }
+        },
+        {
+          path : '/detail/:skuId',
+          component : Detail
+        },
+        {
+          path : '/shopcart',
+          component : ShopCart
         },
     ]
 })
