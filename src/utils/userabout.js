@@ -22,7 +22,23 @@ function getUserTempId(){
   return userTempId;
 }
 
+function setToken(token){
+  localStorage.setItem('OWNTOKEN_KEY',token);
+}
+
+function getToken(){
+  return localStorage.getItem('OWNTOKEN_KEY');
+}
+
+function removeToken(){
+  localStorage.removeItem('OWNTOKEN_KEY');
+}
+
+
 export {
-  getUserTempId
+  getUserTempId,
+  setToken,
+  getToken,
+  removeToken
 }
 

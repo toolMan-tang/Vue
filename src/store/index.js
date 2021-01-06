@@ -6,6 +6,7 @@ import search from "@/store/moudles/search";
 import detail from "@/store/moudles/detail";
 import cart from "@/store/moudles/cart";
 import user from "@/store/moudles/user";
+import trade from "@/store/moudles/trade";
 
 Vue.use(Vuex);
 
@@ -32,6 +33,7 @@ export default new Vuex.Store({
         search,
         detail,
         cart,
-        user
+        user,
+        trade
     }
 })

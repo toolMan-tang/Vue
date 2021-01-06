@@ -17,6 +17,12 @@ service.interceptors.request.use((config) => {
     config.headers.userTempId = userTempId
     }
 
+    //携带登录后标识token
+    let token = store.state.user.token;
+    if(token){
+        config.headers.token = token;
+    }
+
     return config;
 })
 
