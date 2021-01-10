@@ -91,6 +91,16 @@ export const reqPayStatus = (orderId) => {
   })
 }
 
+//查询我的订单
+///order/auth/{page}/{limit}
+//get
+export const reqOwnOrderInfo = (limit,page) => {
+  return ajax({
+    url:`/order/auth/${page}/${limit}`,
+    method:'get'
+  })
+}
+
 export const floorsList = () => mock('/floors');
 
 export const commendsList = () => mock('/recommends');

@@ -3,14 +3,17 @@ import App from '@/App';
 import router from '@/router';
 import store from "@/store";
 import Nav from "@/components/Nav";
+import Pagination from "@/components/Pagination";
 import * as Api from "@/api";
 
 import './plugins/swiper' // 加载swiper的配置
 import './plugins/element' //加载element-ui 
-import './mock/mockServer'
+import './plugins/validate' //加载element-ui 
+import './mock/mockServer';
 
 
 Vue.component(Nav.name,Nav);
+Vue.component(Pagination.name,Pagination);
 
 
 Vue.config.productionTip = false

@@ -7,6 +7,9 @@ import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
 import Paysuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
+import OwnOrder from "@/pages/Center/OwnOrder";
+import GroupOrder from "@/pages/Center/GroupOrder";
 
 export default  [
     {
@@ -46,14 +49,46 @@ export default  [
     },
     {
       path : '/trade',
-      component : Trade
+      component : Trade,
+      // beforeEnter: (to, from, next) => {
+      //   if(from.path === '/shopcart'){
+      //     next()
+      //   }else{
+      //     next('/')
+      //   }
+      // }
     },
     {
       path : '/pay',
-      component : Pay
+      component : Pay,
+      beforeEnter: (to, from, next) => {
+        if(to.path === '/trade'){
+          next()
+        }else{
+          next('/')
+        }
+      }
     },
     {
       path : '/paysuccess',
       component : Paysuccess
+    },
+    {
+      path : '/center',
+      component : Center,
+      children : [
+        {
+          path : 'ownorder',
+          component : OwnOrder
+        },
+        {
+          path : 'grouporder',
+          component : GroupOrder
+        },
+        {
+          path:'',
+          redirect: 'ownorder'
+        }
+      ]
     }
 ]

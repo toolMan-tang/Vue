@@ -8,8 +8,9 @@
     </h3>
     <div class="content">
       <label>手机号:</label>
-      <input type="text" placeholder="请输入你的手机号" v-model="phone" />
-      <span class="error-msg">错误提示信息</span>
+      <!-- <input type="text" placeholder="请输入你的手机号" v-model="phone" /> -->
+      <input type="text" placeholder="请输入你的手机号" v-model="phone" v-validate = "{required : true, email: true}" name="phone"/>
+      <span class="error-msg" name="phone">{{errors.first('phone')}}</span>
     </div>
     <div class="content">
       <label>验证码:</label>
